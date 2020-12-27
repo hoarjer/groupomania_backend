@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "Mediator33!",
+    "database": "groupomania_dev_db",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "Mediator33!",
+    "database": "groupomania_test_db",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "Mediator33!",
+    "database": "groupomania_prod_db",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}
