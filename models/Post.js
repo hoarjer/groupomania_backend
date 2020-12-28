@@ -5,7 +5,7 @@ const { sequelize } = require(".");
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('post', {
-    post_id: {
+    _id: {
       type: DataTypes.INTEGER(50),
       primaryKey: true,
       allowNull: false,

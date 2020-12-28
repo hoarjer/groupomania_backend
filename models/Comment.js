@@ -5,7 +5,7 @@ const { sequelize } = require(".");
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('comment', {
-    comment_id: {
+    _id: {
       type: DataTypes.INTEGER(50),
       primaryKey: true,
       allowNull: false,

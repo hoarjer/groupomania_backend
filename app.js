@@ -1,6 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+const db = require('./models');
+const userRoutes = require('./routes/user');
 
 const app = express();
+
+app.use(cors());
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -9,13 +17,20 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use((req, res, next) => {
-    res.json({ message: 'Requête bien reçue !'});
-    next();
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-app.use((req, res, next) => {
-    console.log('Réponse bien envoyée!');
-});
+app.use('/api/auth/', userRoutes);
+
+// app.use((req, res, next) => {
+//     res.json({message: "hello" });
+//     return User;
+//     // console.log(db);
+//     next();
+// });
+
+// app.use((req, res, next) => {
+//     console.log('Réponse bien envoyée!');
+// });
 
 module.exports = app;
