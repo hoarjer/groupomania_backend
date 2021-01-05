@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true
     },
+    user_id: {
+        type: DataTypes.INTEGER(50),
+        required: true,
+        allowNull: false
+     },
     content: {
       type: DataTypes.TEXT,
       allowNull: true
@@ -19,12 +24,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    // // fk dans la table user
-    // user_id: {
-    //    type: DataTypes.INTEGER(50),
-    //    required: true,
-    //    allowNull: false
-    // },
     updated_at: {
       type: DataTypes.DATE
     },

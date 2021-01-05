@@ -15,18 +15,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    // // fk dans la table user
-    // user_id: {
-    //     type: DataTypes.INTEGER(50),
-    //     required: true,
-    //     allowNull: false
-    //  },
-    //  // fk dans la table post
-    // post_id: {
-    //     type: DataTypes.INTEGER(50),
-    //     required: true,
-    //     allowNull: false
-    //  },
+    // fk dans la table user
+    user_id: {
+        type: DataTypes.INTEGER(50),
+        required: true,
+        allowNull: false
+     },
+     // fk dans la table post
+    post_id: {
+        type: DataTypes.INTEGER(50),
+        required: true,
+        allowNull: false
+     },
     updated_at: {
       type: DataTypes.DATE
     },

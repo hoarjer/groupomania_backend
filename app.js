@@ -4,6 +4,8 @@ const cors = require('cors');
 
 const db = require('./models');
 const userRoutes = require('./routes/user');
+const postRoutes = require('./routes/post');
+const commentRoutes = require('./routes/comment');
 
 const app = express();
 
@@ -21,16 +23,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/api/auth/', userRoutes);
+app.use('/api/', postRoutes);
+app.use('/api/', commentRoutes);
 
-// app.use((req, res, next) => {
-//     res.json({message: "hello" });
-//     return User;
-//     // console.log(db);
-//     next();
-// });
-
-// app.use((req, res, next) => {
-//     console.log('Réponse bien envoyée!');
-// });
+db.sequelize
+.sync({ force: false })
+.then(() => console.log("Drop and resync with {force: true}"));
 
 module.exports = app;
