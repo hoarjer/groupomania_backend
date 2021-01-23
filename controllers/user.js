@@ -1,7 +1,11 @@
 const db = require('../models');
+const Post = db.post;
 const User = db.user;
+const Comment = db.comment;
+const sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 exports.signup = (req, res, next) => {
     // formatage du mdp
@@ -18,8 +22,16 @@ exports.signup = (req, res, next) => {
                 });
                 // sauvegarde de l'utilisateur
                 user.save()
-                    .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-                    .catch(error => res.status(400).json({ message: error }));
+                    .then(() => res.status(201).json({
+                        role: user.is_admin,
+                        userId: user._id,
+                        token: jwt.sign(
+                            { userId: user._id },
+                            'RANDOM_TOKEN_SECRET',
+                            { expiresIn: '24h' }
+                        )
+                    }))
+                    .catch(error => res.status(400).json({ message: "Le compte n'a pas pu être créé" }));
             })
             .catch(error => res.status(500).json({ message: error }));
     } else {
@@ -28,7 +40,6 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-    console.log(req.body);
     // vérification de l'email
     User.findOne({
         where: { email: req.body.email }
@@ -45,6 +56,7 @@ exports.login = (req, res, next) => {
                     }
                     // création du token contenant le userId
                     res.status(200).json({
+                        role: user.is_admin,
                         userId: user._id,
                         token: jwt.sign(
                             { userId: user._id },
@@ -59,26 +71,83 @@ exports.login = (req, res, next) => {
 };
 
 exports.getAllUsers = (req, res, next) => {
-    User.findAll()
-    .then( users => res.status(200).json({ users }))
-    .catch( err => res.status(400).json({ err }));
+    User.findAll({
+        include: [
+            {
+                model: Post,
+                required: false,
+            },
+            {
+                model: Comment,
+                required: false,
+            }
+        ]
+    })
+        .then(users => res.status(200).json({ users }))
+        .catch(err => res.status(400).json({ err }));
 };
 
 exports.getOneUser = (req, res, next) => {
-    User.findOne({ where: { _id: req.params.id } })
+    User.findOne({
+        include: [
+            {
+                model: Post,
+                required: false,
+                order: sequelize.literal("created_at DESC"),
+                include: [
+                    {
+                        model: Comment,
+                        required: false
+                    }
+                ]
+            }
+        ],
+        where: { _id: req.params.id }
+    })
         .then(user => res.status(200).json({ user }))
         .catch(err => res.status(400).json({ err }));
 };
 
 exports.modifyUser = (req, res, next) => {
-    userObject = req.body;
-    User.update({ ...userObject }, { where: { _id: req.params.id }})
-    .then(() => res.status(200).json({ message: "L'utilisateur a été modifié !"}))
-    .catch(err => res.status(400).json({ err }));
+    // userObject = req.body;
+    userObject = req.file ?
+        {
+            ...req.body.user,
+            img_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        } : { ...req.body };
+    //     if (req.file) {
+    //         User.findOne({ where: { _id: req.params.id } })
+    //         .then(user => {
+    //             const filename = user.img_url.split('/images')[1];
+    //             fs.unlink(`images/${filename}`, () => {
+    //                 User.update({ ...userObject }, { where: { _id: req.params.id } })
+    //                     .then(() => res.status(200).json({ message: "L'utilisateur a été modifié !" }))
+    //                     .catch(err => res.status(400).json({ err }));
+    //             })
+    //         })
+    //         .catch(err => res.status(500).json({ err }));
+    // } else {
+        User.update({ ...userObject }, { where: { _id: req.params.id } })
+                        .then(() => res.status(200).json({ message: "L'utilisateur a été modifié !" }))
+                        .catch(err => res.status(400).json({ err }));
+    // }
 };
 
 exports.deleteUser = (req, res, next) => {
-    User.destroy({ where: { _id: req.params.id }})
-    .then(() => res.status(200).json({ message: "Utilisateur supprimé !"}))
-    .catch(err => res.status(400).json({ err }));
+    User.findOne({ where: { _id: req.params.id } })
+        .then(user => {
+            if (user.img_url) {
+                const filename = user.img_url.split('/images')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    User.destroy({ where: { _id: req.params.id } })
+                        .then(() => res.status(200).json({ message: "Utilisateur supprimé !" }))
+                        .catch(err => res.status(400).json({ err }));
+                    })
+            }
+            User.destroy({ where: { _id: req.params.id } })
+                    .then(() => res.status(200).json({ message: "Utilisateur supprimé !" }))
+                    .catch(err => res.status(400).json({ err }));
+        })
+        .catch(err => res.status(500).json({ err }));
+
 };

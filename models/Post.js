@@ -6,17 +6,12 @@ const { sequelize } = require(".");
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('post', {
     _id: {
-      type: DataTypes.INTEGER(50),
+      type: DataTypes.INTEGER(9).UNSIGNED,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true
+      autoIncrement: true,
     },
-    user_id: {
-        type: DataTypes.INTEGER(50),
-        required: true,
-        allowNull: false
-     },
-    content: {
+    title: {
       type: DataTypes.TEXT,
       allowNull: true
     },
@@ -24,11 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    updated_at: {
-      type: DataTypes.DATE
-    },
-    deleted_at: {
-      type: DataTypes.DATE
+    is_public: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   },
     {

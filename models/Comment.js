@@ -6,7 +6,7 @@ const { sequelize } = require(".");
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('comment', {
     _id: {
-      type: DataTypes.INTEGER(50),
+      type: DataTypes.INTEGER(9).UNSIGNED.ZEROFILL,
       primaryKey: true,
       allowNull: false,
       autoIncrement: true
@@ -15,24 +15,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    // fk dans la table user
-    user_id: {
-        type: DataTypes.INTEGER(50),
-        required: true,
-        allowNull: false
-     },
-     // fk dans la table post
-    post_id: {
-        type: DataTypes.INTEGER(50),
-        required: true,
-        allowNull: false
-     },
-    updated_at: {
-      type: DataTypes.DATE
-    },
-    deleted_at: {
-      type: DataTypes.DATE
+    is_public: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
+    // updated_at: {
+    //   type: DataTypes.DATE
+    // },
+    // deleted_at: {
+    //   type: DataTypes.DATE
+    // }
   },
     {
       underscored: true,

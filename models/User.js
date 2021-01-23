@@ -6,7 +6,7 @@ const { sequelize } = require(".");
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('user', {
     _id: {
-      type: DataTypes.INTEGER(50),
+      type: DataTypes.INTEGER(9).UNSIGNED.ZEROFILL,
       primaryKey: true,
       allowNull: false,
       autoIncrement: true
@@ -34,15 +34,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false
     },
+    img_url: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     bio: {
       type: DataTypes.TEXT,
       allowNull: true
-    },
-    updated_at: {
-      type: DataTypes.DATE
-    },
-    deleted_at: {
-      type: DataTypes.DATE
     }
   },
     {

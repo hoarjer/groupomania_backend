@@ -41,7 +41,7 @@ db.user.hasMany(db.post);
 db.user.hasMany(db.comment);
 
 // post
-// db.post.belongsTo(db.user);
+db.post.belongsTo(db.user);
 db.post.hasMany(db.comment);
 
 // comment

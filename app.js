@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
+const helmet = require('helmet');
 
 const db = require('./models');
 const userRoutes = require('./routes/user');
@@ -21,6 +23,10 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(helmet());
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/auth/', userRoutes);
 app.use('/api/', postRoutes);
