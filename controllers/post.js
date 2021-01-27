@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const sequelize = require('sequelize');
+// const sequelize = require('sequelize');
 const db = require('../models');
 const Post = db.post;
 const User = db.user;
@@ -47,7 +47,7 @@ exports.getAdminPosts = (req, res, next) => {
         .catch(err => res.status(400).json({ err }));
 };
 
-exports.getAllPosts = (req, res, next) => {
+exports.getUsersPosts = (req, res, next) => {
     Post.findAll({
         where: {
             is_public: true,
@@ -63,6 +63,26 @@ exports.getAllPosts = (req, res, next) => {
                 where: {
                     is_public: true,
                 },
+                include: [{
+                    model: User
+                }]
+            },
+        ],
+    })
+        .then(posts => res.status(200).json({ posts }))
+        .catch(err => res.status(400).json({ message: err }));
+};
+
+exports.getAllPosts = (req, res, next) => {
+    Post.findAll({
+        include: [
+            {
+                model: User,
+                required: true
+            },
+            {
+                model: Comment,
+                required: false,
                 include: [{
                     model: User
                 }]
@@ -111,6 +131,9 @@ exports.getOnePost = (req, res, next) => {
             },
             {
                 model: Comment,
+                where: {
+                    is_public: true
+                },
                 required: false,
                 include: [{
                     model: User

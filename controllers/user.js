@@ -93,11 +93,19 @@ exports.getOneUser = (req, res, next) => {
             {
                 model: Post,
                 required: false,
-                order: sequelize.literal("created_at DESC"),
+                where: {
+                    is_public: true
+                },
+                order: [
+                    ["created_at", "DESC"]
+                ],
                 include: [
                     {
                         model: Comment,
-                        required: false
+                        required: false,
+                        where: {
+                            is_public: true
+                        }
                     }
                 ]
             }
@@ -128,7 +136,9 @@ exports.modifyUser = (req, res, next) => {
     //         .catch(err => res.status(500).json({ err }));
     // } else {
         User.update({ ...userObject }, { where: { _id: req.params.id } })
-                        .then(() => res.status(200).json({ message: "L'utilisateur a été modifié !" }))
+                        .then(() => {
+                            res.status(200).json({ message: "L'utilisateur a été modifié !"});
+                        })
                         .catch(err => res.status(400).json({ err }));
     // }
 };
