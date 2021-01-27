@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-// const sequelize = require('sequelize');
 const db = require('../models');
 const Post = db.post;
 const User = db.user;
@@ -13,7 +12,6 @@ exports.createPost = (req, res, next) => {
         ...req.body.post,
         title: req.body.title,
         gif_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        // gif_url: req.body.gif_url,
         userId: userId
     } 
     Post.create({ ...postObject })
@@ -162,8 +160,6 @@ exports.getPostsByUser = (req, res, next) => {
 
 exports.modifyPost = (req, res, next) => {
     Post.update({
-        // content: req.body.content,
-        // gif_url: req.body.gif_url,
         is_public: true
     }, {
         where: {

@@ -28,7 +28,7 @@ exports.signup = (req, res, next) => {
                         token: jwt.sign(
                             { userId: user._id },
                             'RANDOM_TOKEN_SECRET',
-                            { expiresIn: '24h' }
+                            { expiresIn: '2h' }
                         )
                     }))
                     .catch(error => res.status(400).json({ message: "Le compte n'a pas pu être créé" }));
