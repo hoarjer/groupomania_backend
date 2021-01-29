@@ -13,25 +13,6 @@ exports.createComment = (req, res, next) => {
         userId: userId,
         postId: req.params.id
     })
-    // Post.findOne({
-    //     where: { 
-    //         _id: req.params.id
-    //     },
-    //     include: [
-    //         {
-    //             model: User,
-    //             required: false
-    //         },
-    //         {
-    //             model: Comment,
-    //             required: false,
-    //             include: [{
-    //                 model: User,
-    //                 required: false
-    //             }]
-    //         },
-    //     ],
-    // })
         .then((comment) => res.status(201).json({ comment }))
         .catch(err => {
             res.status(400).json({ err });
@@ -99,7 +80,6 @@ exports.getCommentsByUser = (req, res, next) => {
 
 exports.modifyComment = (req, res, next) => {
     Comment.update({
-        // content: req.body.content
         is_public: true
      },
      { where: { _id: req.params.id } })
