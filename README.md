@@ -11,7 +11,7 @@ Dans un terminal de commande allez à la racine du répertoire du back-end et ta
 
 Connectez vous à votre MySQL et créez une nouvelle base de données.
 
-Importez le fichier db_groupomania.sql qui se trouve à la racine du back-end, dans votre base de données.
+Importez le fichier groupomania_db.sql qui se trouve à la racine du back-end, dans votre base de données.
 
 Dans le fichier .env qui se trouve à la racine du back-end, renseignez les champs relatifs à votre MySQL, tel que
 votre NAME, PASSWORD, puis le nom de votre nouvelle base de données dans DATABASE.
