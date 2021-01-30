@@ -32,3 +32,5 @@ email : PierrePaul@admin.com
 mot de passe: AdminAdmin!1
 
 De cette façon vous serez connectés à groupomania en tant qu'admin.
+
+Vous trouverez un example de gif à poster dans le dossier racine du backend.
