@@ -20,7 +20,10 @@ Dans le terminal de commande, dans le backend, tappez : nodemon serve
 
 Ainsi vous serez connectés au serveur qui écoute le port 3000.
 
-Toujours avec votre terminal de commande, allez dans groupomania_front, puis tappez : npm run serve
+Toujours avec votre terminal de commande, allez dans groupomania_front, puis tappez : npm install -g @vue/cli
+puis : npm install
+et enfin : npm run serve
+
 
 Ainsi vous serez connectés au serveur de developpement puis cliquez sur http://localhost:8080/
 
